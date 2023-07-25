@@ -131,3 +131,5 @@ WHERE
         ORDER BY emp_no)
 GROUP BY e.emp_no
 ORDER BY average_salary DESC; 
+
+-- Clean coding by  kingsley ;)
