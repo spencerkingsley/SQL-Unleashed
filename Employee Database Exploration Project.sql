@@ -43,13 +43,13 @@ SELECT
 FROM
     salaries s
     JOIN
-    dept_emp de ON s.emp_no = de.emp_no
+    employees e ON s.emp_no = e.emp_no
+    JOIN
+    dept_emp de ON e.emp_no = de.emp_no
     JOIN
     departments d ON de.dept_no = d.dept_no
-    JOIN
-    employees e ON s.emp_no = e.emp_no
-GROUP BY de.dept_no, e.gender
-ORDER BY de.dept_no;
+GROUP BY d.dept_name, e.gender
+ORDER BY avg_salary DESC;
 
 
 #5. What is the distribution of employees in the company by job title?
@@ -132,4 +132,27 @@ WHERE
 GROUP BY e.emp_no
 ORDER BY average_salary DESC; 
 
--- Clean coding by  kingsley ;)
+
+#11. Find the names of employees with the highest salary in each department
+SELECT
+    dept_name,
+    employee_name,
+    salary
+FROM (
+    SELECT
+        d.dept_name,
+        CONCAT(e.first_name, ' ', e.last_name) AS employee_name,
+        s.salary,
+        ROW_NUMBER() OVER(PARTITION BY d.dept_name ORDER BY s.salary DESC) AS salary_rank
+    FROM
+        employees e
+        JOIN
+        salaries s ON e.emp_no = s.emp_no
+        JOIN
+        dept_emp de ON s.emp_no = de.emp_no
+        JOIN
+        departments d ON de.dept_no = d.dept_no) ranked
+WHERE salary_rank = 1
+ORDER BY salary DESC;
+
+-- Clean code by Kingsley ;)
