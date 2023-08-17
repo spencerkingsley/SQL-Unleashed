@@ -49,7 +49,7 @@ FROM
     JOIN
     departments d ON de.dept_no = d.dept_no
 GROUP BY d.dept_name, e.gender
-ORDER BY avg_salary DESC;
+ORDER BY d.dept_name;
 
 
 #5. What is the distribution of employees in the company by job title?
